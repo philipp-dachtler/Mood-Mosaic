@@ -14,5 +14,10 @@
   <h1>🧠 Mood Mosaic</h1>
   <div id="calendar"></div>
   <p>Tippe auf ein Feld & wähle deine Stimmung</p>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
 </body>
 </html>
