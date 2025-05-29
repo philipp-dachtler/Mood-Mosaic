@@ -1,20 +1,20 @@
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open("mood-cache").then((cache) => {
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open('kalender-cache').then(cache => {
       return cache.addAll([
-        "./",
-        "./index.html",
-        "./style.css",
-        "./script.js",
-        "./manifest.json",
-        "./icon.png"
+        './',
+        './index.html',
+        './style.css',
+        './script.js',
+        './manifest.json',
+        './sounds/notification.mp3'
       ]);
     })
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => response || fetch(event.request))
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(response => response || fetch(e.request))
   );
 });
