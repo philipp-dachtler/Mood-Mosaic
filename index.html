@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#fce38a" />
-  <title>Mood Mosaic</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icon.png" />
-  <script defer src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <title>Mini Kalender</title>
 </head>
 <body>
-  <h1>🧠 Mood Mosaic</h1>
-  <div id="calendar"></div>
-  <p>Tippe auf ein Feld & wähle deine Stimmung</p>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-</script>
+  <div id="app">
+    <h1>🗓️ Kalender</h1>
+    <div id="calendar-controls">
+      <button id="prev-month">◀</button>
+      <span id="current-month">Mai 2025</span>
+      <button id="next-month">▶</button>
+    </div>
+    <div id="calendar"></div>
+    <div id="event-form">
+      <input type="date" id="event-date">
+      <input type="text" id="event-title" placeholder="Ereignis">
+      <button id="add-event">➕</button>
+    </div>
+  </div>
+  <audio id="notification-sound" src="sounds/notification.mp3" preload="auto"></audio>
+  <script src="script.js"></script>
 </body>
 </html>
