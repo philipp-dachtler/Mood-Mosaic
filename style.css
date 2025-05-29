@@ -1,0 +1,51 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f9f9f9;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+#app {
+  width: 100%;
+  max-width: 400px;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+#calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+.day {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+.day.has-event {
+  background-color: #fffae6;
+}
+#event-form {
+  margin-top: 20px;
+  display: flex;
+  gap: 5px;
+}
+input[type="date"], input[type="text"] {
+  flex: 1;
+  padding: 5px;
+}
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
