@@ -1,36 +1,61 @@
-const moods = ["😊", "😐", "😢", "😠", "😴"];
-const calendar = document.getElementById("calendar");
-const daysInMonth = new Date().getDate();
+const calendar = document.getElementById('calendar');
+const monthDisplay = document.getElementById('current-month');
+const addBtn = document.getElementById('add-event');
+const eventTitleInput = document.getElementById('event-title');
+const eventDateInput = document.getElementById('event-date');
+const sound = document.getElementById('notification-sound');
 
-function getSavedMood(day) {
-  return localStorage.getItem("mood-" + day) || "🟨";
-}
+let events = JSON.parse(localStorage.getItem('events')) || {};
+let currentDate = new Date();
 
-function saveMood(day, mood) {
-  localStorage.setItem("mood-" + day, mood);
-}
+function renderCalendar() {
+  calendar.innerHTML = '';
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
 
-function drawCalendar() {
-  calendar.innerHTML = "";
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
-  const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+  monthDisplay.textContent = currentDate.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
 
-  for (let i = 1; i <= totalDays; i++) {
-    const cell = document.createElement("div");
-    cell.className = "day";
-    cell.textContent = getSavedMood(i);
-    cell.title = `Tag ${i}`;
-    cell.addEventListener("click", () => {
-      const mood = prompt(`Stimmung für Tag ${i}:\n😊 Glücklich\n😐 Neutral\n😢 Traurig\n😠 Genervt\n😴 Müde`);
-      if (moods.includes(mood)) {
-        saveMood(i, mood);
-        drawCalendar();
+  for (let i = 0; i < firstDay; i++) {
+    calendar.innerHTML += `<div></div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateKey = `${year}-${(month + 1).toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
+    const hasEvent = events[dateKey];
+    calendar.innerHTML += `<div class="day ${hasEvent ? 'has-event' : ''}" data-date="${dateKey}">${d}</div>`;
+  }
+
+  document.querySelectorAll('.day').forEach(day => {
+    day.addEventListener('click', e => {
+      const date = e.currentTarget.dataset.date;
+      if (events[date]) {
+        alert(`📌 Ereignis am ${date}: ${events[date]}`);
+        sound.play();
       }
     });
-    calendar.appendChild(cell);
-  }
+  });
 }
 
-drawCalendar(); 
+addBtn.addEventListener('click', () => {
+  const date = eventDateInput.value;
+  const title = eventTitleInput.value;
+  if (date && title) {
+    events[date] = title;
+    localStorage.setItem('events', JSON.stringify(events));
+    renderCalendar();
+    eventTitleInput.value = '';
+  }
+});
+
+document.getElementById('prev-month').onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
+};
+document.getElementById('next-month').onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+};
+
+renderCalendar();
